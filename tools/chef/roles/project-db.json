@@ -1,0 +1,10 @@
+{
+  "name": "project-db",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "magento1 db role",
+  "run_list": [
+    "role[project-base]",
+    "role[db-mysql56-server]"
+  ]
+}

@@ -1,0 +1,19 @@
+---
+:name: magento1
+:git_url: git@github.com:inviqa/magento1
+:ref: master
+:seed:
+  :name: magento1
+  :url: git@github.com:inviqa/hem-seed-magento1
+  version: bb5619c
+:vm_ip: 10.10.62.145
+hostname: magento1.dev
+asset_bucket: inviqa-assets-magento1
+vm:
+  :project_mount_path: "/vagrant"
+tmp:
+  mysql_root_password: 984C42CF342f7j6
+  mysql_repl_password: 984C42CF342f7j6
+  mysql_debian_password: 984C42CF342f7j6
+:magento_edition: community
+:magento_version: 1.9.3.0

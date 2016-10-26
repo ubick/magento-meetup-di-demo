@@ -1,0 +1,39 @@
+# General
+.bundle
+build/*
+tools/chef/cookbooks/*
+tools/chef/site-cookbooks/**/cookbooks/*
+tools/chef/tmp/*
+tools/assets/*
+bin/*
+.DS_Store
+.vagrant
+/build/*
+/tools/chef/cookbooks/*
+/tools/chef/tmp/*
+/tools/assets/*
+/bin/*
+secret.key
+
+# Chef
+**/.kitchen/
+**/cucumber/Gemfile.lock
+tools/chef/site-cookbooks/*/Berksfile.lock
+tools/chef/*encrypted_data_bag_secret
+tools/chef/.chef/*encrypted_data_bag_secret
+
+# Composer
+/vendor
+/bin/composer.phar
+
+# Frontend
+.sass-cache/*
+*.css.map
+node_modules/*
+
+# Magento
+public/app/etc/local.xml
+public/errors/local.xml
+public/media
+public/privatesales
+public/var

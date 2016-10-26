@@ -1,0 +1,71 @@
+{
+  "name": "development",
+  "description": "",
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+
+  "default_attributes": {
+    "nginx": {
+      "sites": {
+        "magento1": {
+          "inherits": "magento",
+          "server_name": "magento1.dev",
+          "docroot": "/vagrant/public",
+          "capistrano": false,
+          "magento": {
+            "db": {
+              "username": "magento",
+              "database": "magentodb"
+            }
+          },
+          "php_server_variables": {
+            "MAGE_IS_DEVELOPER_MODE": 1
+          }
+        }
+      }
+    },
+    "mysql": {
+      "allow_remote_root": true,
+      "bind_address": "0.0.0.0",
+      "users": {
+        "magento": {
+          "database_name": "magentodb"
+        }
+      },
+      "tunable": {
+        "max_connections": "50"
+      }
+    },
+
+    "iptables-standard": {
+      "allowed_incoming_ports": {"mysql": "mysql"}
+    },
+    "packages": [ "git" ],
+    "yum-cron": {
+      "cleanday": 9
+    },
+    "yum": {
+      "main": {
+        "keepcache": true
+      }
+    }
+  },
+
+  "override_attributes": {
+    "capistrano": {
+      "group": false
+    },
+    "data-bag-merge": {
+      "environments": {
+        "encrypted": false
+      }
+    },
+    "php-fpm": {
+      "pools": {
+        "www": {
+          "max_spare_servers": "5"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "name": "pipeline",
+  "description": "",
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+
+  "default_attributes": {
+    "nginx": {
+      "sites": {
+        "magento1-qa": {
+          "inherits": "magento",
+          "docroot": "/var/www/magento1-qa/current/public",
+          "server_name": "qa-magento1.webpipeline.net",
+          "capistrano": {
+            "deploy_to": "/var/www/magento1-qa"
+          },
+          "magento": {
+            "db": {
+              "username": "magento1-qa",
+              "database": "magento1-qa"
+            },
+            "redis": {
+              "database": "0",
+              "full_page_cache_database": "1"
+            }
+          }
+        },
+        "magento1-uat": {
+          "inherits": "magento",
+          "docroot": "/var/www/magento1-uat/current/public",
+          "server_name": "uat-magento1.webpipeline.net",
+          "capistrano": {
+            "deploy_to": "/var/www/magento1-uat"
+          },
+          "magento": {
+            "db": {
+              "username": "magento1-uat",
+              "database": "magento1-uat"
+            },
+            "redis": {
+              "database": "2",
+              "full_page_cache_database": "3"
+            }
+          }
+        }
+      }
+    },
+    "mysql": {
+      "users": {
+        "magento1-qa": {
+          "database_name": "magento1-qa"
+        },
+        "magento1-uat": {
+          "database_name": "magento1-uat"
+        }
+      }
+    }
+  }
+}

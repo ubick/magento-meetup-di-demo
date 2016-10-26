@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+# ^ Syntax hint
+require 'ffi'
+
+# Ensure version that supports Atlas integration and chef installation
+Vagrant.require_version '>= 1.8.0'
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+# Hobo.vagrant_plugin "vagrant-hostsupdater"
+# Hobo.vagrant_plugin "vagrant-cachier"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # vagrant-hostsupdater settings
+  config.vm.hostname = "magento1.dev"
+  # config.hostsupdater.aliases = []
+  
+
+  # Mount settings
+  nfs_version = 3
+  nfs_version = 4 if FFI::Platform::IS_LINUX
+  mount_options = { mount_options: ["dmode=777", "fmode=777"] }
+  mount_options = { nfs: true, nfs_version: nfs_version, nfs_udp: false } unless FFI::Platform::IS_WINDOWS
+
+  # Box configuration
+  config.vm.box = 'inviqa/centos-7-stack-php56'
+  config.vm.box_version = '~> 1.0'
+
+  # vagrant-cachier settings
+  config.cache.scope = :box
+  config.cache.auto_detect = false
+  [:composer, :npm, :bower, :yum, :chef].each do |cache|
+    config.cache.enable cache
+  end
+  config.cache.synced_folder_opts = {
+    type: :nfs,
+    mount_options: ['rw', "vers=#{nfs_version}", 'tcp', 'nolock']
+  } unless FFI::Platform::IS_WINDOWS
+
+  # Virtualbox specific configuration
+  config.vm.provider :virtualbox do |vb, overrides|
+    #vb.gui = true
+    vb.name = 'magento1'
+    vb.memory = '1024'
+
+    # Network configuration
+    overrides.vm.network :private_network, ip: "10.10.62.145", netmask: "255.255.0.0"
+    overrides.ssh.forward_agent = true
+
+    overrides.vm.synced_folder(
+      "../../",
+      "/vagrant",
+      mount_options
+    )
+  end
+
+  config.vm.provision :chef_solo do |chef|
+    # Do not add site-cookbooks to this
+    # Berkshelf will copy any site-cookbooks defined in the Berksfile
+    chef.version = '12.10'
+    chef.channel = 'stable'
+
+    chef.cookbooks_path = "../chef/cookbooks"
+    chef.environments_path = "../chef/environments"
+    chef.roles_path = "../chef/roles"
+    chef.data_bags_path = "../chef/data_bags"
+
+    # Please do not add additional recipes / roles / configuration for chef in the Vagrantfile
+    # If you wish to customize the VM chef config, see tools/chef/nodes/development.local.json
+
+    # Utilize config from tools/chef/nodes so it is all in one place
+    require 'json'
+    node_file = Pathname(__FILE__).dirname.join("..", "chef", "nodes", "development.local.json")
+    if File.exists? node_file
+      chef.json = JSON.load(node_file)
+      chef.json['run_list'].each do |recipe|
+        if recipe =~ /(.*)\[(.*)\]/
+          chef.send "add_" + $1, $2
+        else
+          chef.add_recipe recipe
+        end
+      end
+
+      if chef.json['environment']
+        chef.environment = chef.json['environment']
+
+        unless chef.environment == 'development'
+          chef.encrypted_data_bag_secret_key_path = "../chef/encrypted_data_bag_secret"
+        end
+      end
+    end
+  end
+end

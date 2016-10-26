@@ -1,0 +1,16 @@
+{
+  "name": "php56-development",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "PHP5.6 development role",
+  "override_attributes": {
+    "php": {
+      "packages": [
+        "php56w-pecl-xdebug"
+      ]
+    }
+  },
+  "run_list": [
+    "role[php56]"
+  ]
+}

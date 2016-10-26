@@ -1,0 +1,11 @@
+{
+  "name": "project-pipeline",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "magento1 pipeline role",
+  "run_list": [
+    "role[project-base]",
+    "recipe[yum-cron]",
+    "recipe[config-driven-helper::ssl-cert-self-signed]"
+  ]
+}

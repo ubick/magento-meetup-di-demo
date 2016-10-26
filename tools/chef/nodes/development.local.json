@@ -1,0 +1,8 @@
+{
+  "run_list": [
+    "role[project-development]",
+    "role[project-db]",
+    "role[project-web]"
+  ],
+  "environment": "development"
+}

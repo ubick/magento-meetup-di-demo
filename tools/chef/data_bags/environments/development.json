@@ -1,0 +1,34 @@
+{
+  "id": "development",
+  "default_attributes": {
+    "mysql": {
+      "server_root_password": "984C42CF342f7j6",
+      "server_repl_password": "984C42CF342f7j6",
+      "server_debian_password": "984C42CF342f7j6",
+      "connections": {
+        "default": {
+          "password": "984C42CF342f7j6"
+        }
+      },
+      "users": {
+        "magento": {
+          "password": "magento"
+        }
+      }
+    },
+    "nginx": {
+      "sites": {
+        "magento1": {
+          "magento": {
+            "app": {
+              "crypt_key": "fIf5yowN8eB9Wal5huM1ceaS3E3op7aU"
+            },
+            "db": {
+              "password": "magento"
+            }
+          }
+        }
+      }
+    }
+  }
+}

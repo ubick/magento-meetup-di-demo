@@ -1,0 +1,21 @@
+{
+  "name": "project-development",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "magento1 development role",
+  "default_attributes": {
+    "iptables-standard": {
+      "allowed_incoming_ports": {
+        "mailcatcher": "1080"
+      }
+    }
+  },
+  "run_list": [
+    "role[project-base]",
+    "recipe[yum-cron]",
+    "recipe[mailcatcher-ng]",
+    "recipe[mailcatcher-ng::postfix]",
+    "recipe[config-driven-helper::ssl-cert-self-signed]",
+    "role[php56-development]"
+  ]
+}
