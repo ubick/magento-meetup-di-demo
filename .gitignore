@@ -14,6 +14,9 @@ bin/*
 /tools/assets/*
 /bin/*
 secret.key
+.DS_Store
+._.DS_Store
+._*
 
 # Chef
 **/.kitchen/
