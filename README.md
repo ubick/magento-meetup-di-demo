@@ -1,13 +1,21 @@
-# magento1 Setup
+# Magento Meetup DI Demo 
 
-Please follow the below steps to get started, if you encounter any issues installing the dependencies or provisioning the vm please check the [Common Issues](#common-issues) section first.
+## What is the route of the demo controller?
+
+http://magento1.dev/demo
+
+## How to run unit tests?
+
+```bash
+hem vm ssh && bin/phpspec run
+```
 
 ## Clone the project
 
 Clone the project into your local file system:
 
 ```bash
-git clone git@github.com:inviqa/magento1
+git clone git@github.com:ubick/magento-meetup-di-demo
 ```
 
 ## Install Dependencies
